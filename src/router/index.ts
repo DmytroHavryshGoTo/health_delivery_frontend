@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,15 +7,30 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () => import('@/views/Home.vue'),
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: '/deliveries',
+        name: 'Deliveries',
+        component: () => import('@/components/Deliveries.vue')
+      },
+      {
+        path: '/users',
+        name: 'Users',
+        component: () => import('@/components/Users.vue')
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
+    meta: {
+      guest: true
+    }
   }
 ]
 
@@ -26,4 +40,21 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, _, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (localStorage.getItem('token')) {
+      next()
+      return
+    }
+    next('/login') 
+  } else if (to.matched.some(record => record.meta.guest)) {
+    if (localStorage.getItem('token')) {
+      next('/')
+      return
+    }
+    next() 
+  } else {
+    next() 
+  }
+})
 export default router
