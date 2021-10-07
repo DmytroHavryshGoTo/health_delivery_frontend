@@ -1,4 +1,17 @@
 <template>
+  <v-row>
+    <v-col cols="12">
+      <div class="delivery-header">
+        <h1 style="padding-bottom: 10px">{{ $t('deliveries') }}</h1>
+        <v-btn
+          link
+          to="/deliveries/new"
+          color="#033a71"
+          style="color: #fff;"
+        >
+          {{ $t('createDelivery') }}
+        </v-btn>
+      </div>
       <v-data-table
         :headers="headers"
         :items="backups"
@@ -25,6 +38,8 @@
           </v-btn>
         </template> -->
       </v-data-table>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -48,5 +63,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

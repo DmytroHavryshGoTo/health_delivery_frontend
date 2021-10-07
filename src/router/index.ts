@@ -13,6 +13,11 @@ const routes: Array<RouteConfig> = [
     },
     children: [
       {
+        path: '/deliveries/new',
+        name: 'NewDelivery',
+        component: () => import('@/components/NewDelivery.vue')
+      },
+      {
         path: '/deliveries',
         name: 'Deliveries',
         component: () => import('@/components/Deliveries.vue')

@@ -61,6 +61,13 @@ export default new Vuex.Store({
       } catch (e: any) {
         return Promise.reject({ error: e.response.data.errors[0].detail })
       }
+    },
+    async createDeliveryAction(_, form) {
+      try {
+        await Api().post('/deliveries', toSnakeCase(form))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
     }
   },
   getters: {
