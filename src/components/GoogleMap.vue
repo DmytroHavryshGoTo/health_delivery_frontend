@@ -11,7 +11,7 @@
         :center="startLocation"
         :zoom="6"
         map-type-id="roadmap"
-        style="width: 100%; height: 100%"
+        style="width: 100%; height: 100%; min-height: 400px;"
         :options="{
             zoomControl: false,
             scaleControl: false,
@@ -102,6 +102,10 @@ export default {
         {
           text: this.$t('name'),
           value: 'name'
+        },
+        {
+          text: this.$t('quantity'),
+          value: 'quantity'
         },
         {
           text: this.$t('minTemperature') + ' °C',

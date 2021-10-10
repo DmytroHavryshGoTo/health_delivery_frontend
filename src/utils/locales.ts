@@ -55,7 +55,8 @@ export const messages: LocaleMessages = {
     createNewDump: 'Create new DB dump',
     dumpDate: 'Dump date',
     creator: 'Creator',
-    restore: 'Restore'
+    restore: 'Restore',
+    quantity: 'Quantity'
   },
   uk: {
     email: 'Пошта',
@@ -111,6 +112,7 @@ export const messages: LocaleMessages = {
     createNewDump: 'Створити нову резервну копію',
     dumpDate: 'Дата створення копії',
     creator: 'Створювач',
-    restore: 'Відновити'
+    restore: 'Відновити',
+    quantity: 'Кількість'
   }
 }

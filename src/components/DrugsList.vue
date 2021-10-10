@@ -30,6 +30,9 @@
           <v-list-item-title v-text="drug.name"></v-list-item-title>
 
           <v-list-item-subtitle>
+            {{ $t('quantity') }} {{ drug.quantity }}
+          </v-list-item-subtitle>
+          <v-list-item-subtitle>
             {{ $t('minTemperature') }} {{ drug.minTemperature }} °C
           </v-list-item-subtitle>
           <v-list-item-subtitle>
@@ -75,12 +78,23 @@
           >
           </v-text-field>
           <v-text-field
+            v-model="newDrug.quantity"
+            @input="$v.newDrug.quantity.$touch"
+            :label="$t('quantity') + ' | x > 0'"
+            :class="{ clrError: $v.newDrug.quantity.$error }"
+            :error-messages="errorMessage($v.newDrug.quantity)"
+            outlined
+            type="number"
+          >
+          </v-text-field>
+          <v-text-field
             v-model="newDrug.minTemperature"
             @input="$v.newDrug.minTemperature.$touch"
             :label="$t('minTemperature') + ' °C | -70 > x > 70'"
             :class="{ clrError: $v.newDrug.minTemperature.$error }"
             :error-messages="errorMessage($v.newDrug.minTemperature)"
             outlined
+            type="number"
           >
           </v-text-field>
           <v-text-field
@@ -90,6 +104,7 @@
             :class="{ clrError: $v.newDrug.maxTemperature.$error }"
             :error-messages="errorMessage($v.newDrug.maxTemperature)"
             outlined
+            type="number"
           >
           </v-text-field>
           <v-text-field
@@ -99,6 +114,7 @@
             :class="{ clrError: $v.newDrug.minHumidity.$error }"
             :error-messages="errorMessage($v.newDrug.minHumidity)"
             outlined
+            type="number"
           >
           </v-text-field>
           <v-text-field
@@ -169,6 +185,7 @@ export default {
       this.newDrug = {
         name: '',
         containerId: '',
+        quantity: 1,
         minTemperature: 0,
         maxTemperature: 0,
         minHumidity: 0,
@@ -199,6 +216,10 @@ export default {
         containerId: {
           required,
           minLength: minLength(1) 
+        },
+        quantity: {
+          required,
+          minValue: minValue(1)
         },
         minTemperature: this.tempDrugValidations,
         maxTemperature: this.tempDrugValidations,

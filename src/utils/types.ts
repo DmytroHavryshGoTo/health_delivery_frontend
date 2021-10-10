@@ -24,6 +24,7 @@ type Drug = {
     minHumidity: Number,
     minTemperature: Number,
     name: String,
+    quantity: Number,
     status: 'good' | 'exceeded_min_temperature' | 'exceeded_min_humidity' | 'exceeded_max_temperature'| 'exceeded_max_humidity'
   },
   id: Number,
