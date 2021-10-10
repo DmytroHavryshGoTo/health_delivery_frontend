@@ -14,53 +14,94 @@
       </div>
       <v-data-table
         :headers="headers"
-        :items="backups"
-        :items-per-page="5"
-        class="elevation-1"
+        :items="deliveries"
+        :items-per-page="10"
+        :no-data-text="$t('noData')"
+        :locale="locale"
+        class="deliveries-table"
       >
-        <!-- <template v-slot:item.download="{ item }">
-          <v-btn
-            color="primary"
-            dark
-            small
-            @click="downloadBackup(item.name, true)"
-          >
-            <v-icon>mdi-download</v-icon>
-          </v-btn>
-          <v-btn
-            color="success"
-            dark
-            small
-            style="margin-left: 10px"
-            @click="restore(item.name)"
-          >
-            <v-icon>mdi-reload</v-icon>
-          </v-btn>
-        </template> -->
+        <template #item.status="{ item }">
+          <span>
+            <a :href="`/deliveries/${item.id}`" style="text-decoration: none; color: #033a71;">
+              <h4>
+                <v-icon style="font-size: 48px; padding-right: 10px;">{{ statusToIcon(item.status) }}</v-icon>
+                {{ $t(item.status) }}
+              </h4>
+            </a>
+          </span>
+        </template>
+        <template #item.startPoint="{ item }">
+          <span>{{ item.route[0].name }}</span>
+        </template>
+        <template #item.endPoint="{ item }">
+          <span>{{ item.route[item.route.length - 1].name }}</span>
+        </template>
       </v-data-table>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'deliveries',
+  mounted() {
+    this.loadDeliveriesAction()
+  },
   computed: {
+    ...mapState(['deliveries']),
+    ...mapGetters(['locale']),
     headers() {
       return [
         {
           text: this.$t('status'),
-          value: 'delivery_status'
+          value: 'status'
         },
         {
-          text: this.$t('minTemperature'),
-          value: 'minTemperature'
+          text: this.$t('parcelNumber'),
+          value: 'ttn'
+        },
+        {
+          text: this.$t('startPoint'),
+          value: 'startPoint'
+        },
+        {
+          text: this.$t('endPoint'),
+          value: 'endPoint'
+        },
+        {
+          text: this.$t('estimatedDate'),
+          value: 'estimatedDeliveryDate'
         }
       ]
+    }
+  },
+  methods: {
+    ...mapActions(['loadDeliveriesAction']),
+    statusToIcon(status) {
+      return {
+        preparing_to_deliver: 'mdi-package-variant-closed',
+        delivering: 'mdi-truck-delivery',
+        delivered: 'mdi-package-variant'
+      }[status]
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  .deliveries-table {
+    tbody {
+      tr {
+        background-color: $element-bg-color !important;
+        td {
+          span {
+            display: block;
+            padding: 30px;
+          }
+        }
+      }
+    }
+  }
 </style>

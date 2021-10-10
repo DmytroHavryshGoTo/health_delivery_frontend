@@ -1,14 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { toSnakeCase } from '@/utils/helpers'
-import { Api, extractAttrs } from '@/utils/helpers'
+import { Api, extractAttrs, extractSingleDeliveryAttrs, extractMultipleDeliveriesAttrs } from '@/utils/helpers'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     user: {},
-    users: []
+    users: [],
+    deliveries: [],
+    googleMapDeliveries: [],
+    delivery: {
+      route: [],
+      drugs: []
+    },
+    dbDumps: []
   },
   mutations: {
     setUser(state, payload) {
@@ -16,6 +23,18 @@ export default new Vuex.Store({
     },
     setUsers(state, payload) {
       state.users = payload
+    },
+    setDeliveries(state, payload) {
+      state.deliveries = payload
+    },
+    setGoogleMapDeliveries(state, payload) {
+      state.googleMapDeliveries = payload
+    },
+    setDelivery(state, payload) {
+      state.delivery = payload
+    },
+    setDbDumps(state, payload) {
+      state.dbDumps = payload
     }
   },
   actions: {
@@ -49,7 +68,7 @@ export default new Vuex.Store({
     async loadUsersAction({ commit }) {
       try {
         const { data } = await Api().get('/users')
-        commit('setUsers', extractAttrs(data.data))
+        commit('setUsers', extractAttrs(data))
         return Promise.resolve(data)
       } catch (e: any) {
         return Promise.reject({ error: e.response.data.errors[0].detail })
@@ -65,6 +84,64 @@ export default new Vuex.Store({
     async createDeliveryAction(_, form) {
       try {
         await Api().post('/deliveries', toSnakeCase(form))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
+    },
+    async loadDeliveriesAction({ commit }, url = '/deliveries') {
+      try {
+        const { data } = await Api().get(url)
+        commit('setDeliveries', extractAttrs(data))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      } 
+    },
+    async loadLastThreeDeliveriesAction({ dispatch }) {
+      return dispatch('loadDeliveriesAction', '/deliveries?pagy=true&limit=3')
+    },
+    async loadGoogleMapDeliveriesAction({ commit }) {
+      try {
+        const { data } = await Api().get('/deliveries?status=delivering')
+        commit('setGoogleMapDeliveries', extractMultipleDeliveriesAttrs(data))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
+    },
+    async loadDelivery({ commit }, id) {
+      try {
+        const { data } = await Api().get(`/deliveries/${id}`)
+        commit('setDelivery', extractSingleDeliveryAttrs(data))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      } 
+    },
+    async searchDeliveryAction(_, ttn) {
+      try {
+        const { data } = await Api().get(`/deliveries/search?ttn=${ttn}`)
+        return extractSingleDeliveryAttrs(data)
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      } 
+    },
+    async loadDbDumpsAction({ commit }) {
+      try {
+        const { data } = await Api().get('/settings/dumps')
+        commit('setDbDumps', extractAttrs(data))
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
+    },
+    async createNewDbDumpAction({ dispatch, commit }) {
+      try {
+        await Api().post('/settings/create_dump')
+        dispatch('loadDbDumpsAction')
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
+    },
+    async restoreDbDumpAction(_, id) {
+      try {
+        await Api().post(`/settings/restore_dump`, { id })
       } catch (e: any) {
         return Promise.reject({ error: e.response.data.errors[0].detail })
       }

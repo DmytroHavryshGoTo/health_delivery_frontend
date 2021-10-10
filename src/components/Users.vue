@@ -1,6 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
+      <h1 style="padding-bottom: 10px;">{{ $t('users') }}</h1>
       <v-data-table
         :headers="headers"
         :items="users"

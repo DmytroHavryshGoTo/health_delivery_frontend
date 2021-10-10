@@ -24,6 +24,14 @@
         <v-list-item-title>{{ $t('users') }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+    <v-list-item link :to="'/settings'" v-if="isAdmin">
+      <v-list-item-icon>
+        <v-icon>mdi-cog</v-icon>
+      </v-list-item-icon>
+      <v-list-item-content>
+        <v-list-item-title>{{ $t('settings') }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     <v-list-item @click="exit">
       <v-list-item-icon>
         <v-icon>mdi-exit-run</v-icon>

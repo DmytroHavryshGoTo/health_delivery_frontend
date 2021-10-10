@@ -47,6 +47,15 @@ export const messages: LocaleMessages = {
     newStation: 'New Station',
     startPoint: 'Start point',
     endPoint: 'End point',
+    status: 'Status',
+    preparing_to_deliver: 'Parcel is ready to be sent',
+    delivering: "Parcel's been sent",
+    delivered: 'Delivered',
+    settings: 'Settings',
+    createNewDump: 'Create new DB dump',
+    dumpDate: 'Dump date',
+    creator: 'Creator',
+    restore: 'Restore'
   },
   uk: {
     email: 'Пошта',
@@ -94,5 +103,14 @@ export const messages: LocaleMessages = {
     newStation: 'Нова станція',
     startPoint: 'Початкова точка',
     endPoint: 'Кінцева точка',
+    status: 'Статус',
+    preparing_to_deliver: 'Готується до відправки',
+    delivering: 'Прямує до пункту призначення',
+    delivered: 'Доставлено',
+    settings: 'Налаштування',
+    createNewDump: 'Створити нову резервну копію',
+    dumpDate: 'Дата створення копії',
+    creator: 'Створювач',
+    restore: 'Відновити'
   }
 }

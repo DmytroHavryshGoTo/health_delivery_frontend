@@ -13,6 +13,11 @@ const routes: Array<RouteConfig> = [
     },
     children: [
       {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('@/components/Settings.vue')
+      },
+      {
         path: '/deliveries/new',
         name: 'NewDelivery',
         component: () => import('@/components/NewDelivery.vue')
@@ -21,6 +26,11 @@ const routes: Array<RouteConfig> = [
         path: '/deliveries',
         name: 'Deliveries',
         component: () => import('@/components/Deliveries.vue')
+      },
+      {
+        path: '/deliveries/:id',
+        name: 'Delivery',
+        component: () => import('@/components/Delivery.vue')
       },
       {
         path: '/users',

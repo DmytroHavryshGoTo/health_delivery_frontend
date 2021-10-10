@@ -23,7 +23,7 @@
           }"
       >
         <gmap-marker
-          v-for="(item, key) in deliveries"
+          v-for="(item, key) in googleMapDeliveries"
           :key="key"
           :position="getPosition(item)"
           :clickable="true"
@@ -39,7 +39,7 @@
           v-if="infoOpened"
         >
           <div class="city-info" v-if="selectedMarker">
-            <h4 class="modal-title"><a :href="`/deliveries/${selectedMarker.id}`">#{{ selectedMarker.ttn }}</a>{{ $t('estimatedDate') }}: {{ selectedMarker.estimatedDate }}</h4>
+            <h4 class="modal-title"><a :href="`/deliveries/${selectedMarker.id}`">#{{ selectedMarker.ttn }}</a>{{ $t('estimatedDate') }}: {{ selectedMarker.estimatedDeliveryDate }}</h4>
             <v-data-table
               :headers="itemHeaders"
               :items="selectedMarker.drugs"
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 const mapId = process.env.VUE_APP_MAP_ID
 
 export default {
@@ -85,59 +87,16 @@ export default {
         lat: 49.0384,
         lng: 33.4513
       },
-      deliveries: [
-        {
-          id: 1,
-          ttn: '5678909876567',
-          estimatedDate: '26.07',
-          lat: "50.4021702",
-          lng: "30.3926088",
-          drugs: [
-            {
-              name: 'Moderna',
-              minTemperature: '+5 C'
-            },
-            {
-              name: 'Moderna',
-              minTemperature: '+5 C'
-            },
-            {
-            name: 'Moderna 1',
-            minTemperature: '+5 C',
-            }
-          ]
-        },
-        {
-          id: 2,
-          ttn: '7654567876567',
-          estimatedDate: '26.07',
-          lat: "49.0384",
-          lng: "33.4513",
-          drugs: [
-            {
-              name: 'Moderna',
-              minTemperature: '+5 C'
-            },
-            {
-              name: 'Moderna',
-              minTemperature: '+5 C'
-            },
-            {
-            name: 'Moderna 1',
-            minTemperature: '+5 C',
-            }
-          ]
-        }
-      ],
       selectedKey: null,
       selectedMarker: null,
       infoOpened: false
     };
   },
   mounted() {
-    setTimeout(() => this.loading = false, 1500)
+    this.loadActiveDeliveries()
   },
   computed: {
+    ...mapState(['googleMapDeliveries']),
     itemHeaders() {
       return [
         {
@@ -145,13 +104,33 @@ export default {
           value: 'name'
         },
         {
-          text: this.$t('minTemperature'),
+          text: this.$t('minTemperature') + ' °C',
           value: 'minTemperature'
+        },
+        {
+          text: this.$t('maxTemperature') + ' °C',
+          value: 'maxTemperature'
+        },
+        {
+          text: this.$t('minHumidity') + ' %',
+          value: 'minHumidity'
+        },
+        {
+          text: this.$t('maxHumidity') + ' %',
+          value: 'maxHumidity'
         }
       ]
+    },
+    deliveriesWithCoords() {
+      return this.googleMapDeliveries.filter(({ lat, lon }) => lat && lon)
     }
   },
   methods: {
+    ...mapActions(['loadGoogleMapDeliveriesAction']),
+    async loadActiveDeliveries() {
+      await this.loadGoogleMapDeliveriesAction()
+      this.loading = false
+    },
     getMarkers(key) {
       if (this.selectedKey === key) return this.mapMarkerActive
       return this.mapMarker
@@ -159,7 +138,7 @@ export default {
     getPosition: function(marker) {
       return {
         lat: parseFloat(marker.lat),
-        lng: parseFloat(marker.lng)
+        lng: parseFloat(marker.lon)
       };
     },
     toggleInfo: function(marker, key) {
