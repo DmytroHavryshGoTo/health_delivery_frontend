@@ -95,7 +95,7 @@ export default {
       return [
         { text: this.$t('firstName'), value: 'firstName' },
         { text: this.$t('lastName'), value: 'lastName' },
-        { text: this.$t('email'), value: 'emailName' },
+        { text: this.$t('email'), value: 'email' },
         { text: this.$t('isAdmin'), value: 'admin' },
         { text: '', value: 'edit' }
       ]
