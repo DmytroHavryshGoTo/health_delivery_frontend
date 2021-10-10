@@ -36,6 +36,11 @@
         <template #item.endPoint="{ item }">
           <span>{{ item.route[item.route.length - 1].name }}</span>
         </template>
+        <template #item.remove="{ item }">
+          <v-btn v-if="item.status === 'preparing_to_deliver'" icon @click="deleteDeliveryAction(item.id)">
+            <v-icon color="red">mdi-close-circle-outline</v-icon>
+          </v-btn>
+        </template>
       </v-data-table>
     </v-col>
   </v-row>
@@ -73,12 +78,16 @@ export default {
         {
           text: this.$t('estimatedDate'),
           value: 'estimatedDeliveryDate'
+        },
+        {
+          text: this.$t('deleteDelivery'),
+          value: 'remove'
         }
       ]
     }
   },
   methods: {
-    ...mapActions(['loadDeliveriesAction']),
+    ...mapActions(['loadDeliveriesAction', 'deleteDeliveryAction']),
     statusToIcon(status) {
       return {
         preparing_to_deliver: 'mdi-package-variant-closed',

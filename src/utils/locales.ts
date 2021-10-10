@@ -56,7 +56,8 @@ export const messages: LocaleMessages = {
     dumpDate: 'Dump date',
     creator: 'Creator',
     restore: 'Restore',
-    quantity: 'Quantity'
+    quantity: 'Quantity',
+    deleteDelivery: 'Delete delivery'
   },
   uk: {
     email: 'Пошта',
@@ -113,6 +114,7 @@ export const messages: LocaleMessages = {
     dumpDate: 'Дата створення копії',
     creator: 'Створювач',
     restore: 'Відновити',
-    quantity: 'Кількість'
+    quantity: 'Кількість',
+    deleteDelivery: 'Видалити відправлення'
   }
 }

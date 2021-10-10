@@ -96,6 +96,14 @@ export default new Vuex.Store({
         return Promise.reject({ error: e.response.data.errors[0].detail })
       } 
     },
+    async deleteDeliveryAction({ dispatch }, id) {
+      try {
+        await Api().delete(`/deliveries/${id}`)
+        dispatch('loadDeliveriesAction')
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      } 
+    },
     async loadLastThreeDeliveriesAction({ dispatch }) {
       return dispatch('loadDeliveriesAction', '/deliveries?pagy=true&limit=3')
     },
