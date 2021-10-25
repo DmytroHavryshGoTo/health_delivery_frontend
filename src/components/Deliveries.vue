@@ -95,6 +95,12 @@ export default {
         delivered: 'mdi-package-variant'
       }[status]
     }
+  },
+  watch: {
+    locale() {
+      console.log('fsd')
+      this.loadDeliveriesAction()
+    }
   }
 }
 </script>

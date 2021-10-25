@@ -15,7 +15,8 @@ export default new Vuex.Store({
       route: [],
       drugs: []
     },
-    dbDumps: []
+    dbDumps: [],
+    storeLocale: ''
   },
   mutations: {
     setUser(state, payload) {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     setDbDumps(state, payload) {
       state.dbDumps = payload
+    },
+    setStoreLocale(state, payload) {
+      state.storeLocale = payload
     }
   },
   actions: {
@@ -159,8 +163,8 @@ export default new Vuex.Store({
     isAdmin(state: any) {
       return !!state.user.admin
     },
-    locale() {
-      return localStorage.getItem('locale') || 'en'
+    locale(state: any) {
+      return state.storeLocale || localStorage.getItem('locale') || 'en'
     }
   }
 })

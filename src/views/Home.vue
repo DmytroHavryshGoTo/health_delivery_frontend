@@ -41,7 +41,7 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapMutations } from 'vuex'
   import Sidebar from '@/components/Sidebar.vue'
   import GoogleMap from '@/components/GoogleMap.vue'
   import FindDelivery from '@/components/FindDelivery.vue'
@@ -61,7 +61,9 @@
     },
     methods: {
       ...mapActions(['loadUserProfileAction']),
+      ...mapMutations(['setStoreLocale']),
       changeLocale(val: string) {
+        this.setStoreLocale(val)
         this.$i18n.locale = val
         this.$vuetify.lang.current = val
         localStorage.setItem('locale', val)

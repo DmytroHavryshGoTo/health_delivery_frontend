@@ -16,7 +16,6 @@
         :items="dbDumps"
         :items-per-page="10"
         :no-data-text="$t('noData')"
-        :locale="locale"
         class="elevation-1"
       >
         <template #item.restore="{ item }">
@@ -40,7 +39,7 @@ export default {
     this.loadDbDumpsAction()
   },
   computed: {
-    ...mapState(['dbDumps']),
+    ...mapState(['dbDumps', 'storeLocale']),
     ...mapGetters(['locale']),
     headers() {
       return [
@@ -52,6 +51,11 @@ export default {
   },
   methods: {
     ...mapActions(['loadDbDumpsAction', 'createNewDbDumpAction', 'restoreDbDumpAction'])
+  },
+  watch: {
+    locale() {
+      this.loadDbDumpsAction()
+    }
   }
 }
 </script>

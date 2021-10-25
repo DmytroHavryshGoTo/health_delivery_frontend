@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import SmallDeliveryList from './SmallDeliveryList.vue'
 
 export default {
@@ -66,7 +66,8 @@ export default {
     this.loadLastThreeDeliveries()
   },
   computed: {
-    ...mapState(['deliveries'])
+    ...mapState(['deliveries']),
+    ...mapGetters(['locale'])
   },
   methods: {
     ...mapActions(['loadLastThreeDeliveriesAction', 'searchDeliveryAction']),
@@ -86,6 +87,11 @@ export default {
       } finally {
         this.searching = false
       }
+    }
+  },
+  watch: {
+    locale() {
+      this.loadLastThreeDeliveries()
     }
   }
 }
