@@ -57,7 +57,9 @@ export const messages: LocaleMessages = {
     creator: 'Creator',
     restore: 'Restore',
     quantity: 'Quantity',
-    deleteDelivery: 'Delete delivery'
+    deleteDelivery: 'Delete delivery',
+    updateSsl: 'Update SSL',
+    editUser: 'Edit User'
   },
   uk: {
     email: 'Пошта',
@@ -115,6 +117,8 @@ export const messages: LocaleMessages = {
     creator: 'Створювач',
     restore: 'Відновити',
     quantity: 'Кількість',
-    deleteDelivery: 'Видалити відправлення'
+    deleteDelivery: 'Видалити відправлення',
+    updateSsl: 'Оновити сертифікат',
+    editUser: 'Редагування користувача'
   }
 }

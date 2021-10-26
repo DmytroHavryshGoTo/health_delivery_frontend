@@ -1,14 +1,24 @@
 <template>
   <v-row>
-    <v-col cols="12">
+    <v-col cols="4">
       <h1 style="padding-bottom: 10px;">
         {{ $t('settings') }}
-        <v-btn
-          color="#033a71"
-          style="color: #fff;"
-          @click="createNewDbDumpAction"
-        >{{ $t('createNewDump') }}</v-btn>
       </h1>
+    </v-col>
+    <v-col cols="4">
+      <v-btn
+        color="#033a71"
+        style="color: #fff;"
+        @click="createNewDbDumpAction"
+      >{{ $t('createNewDump') }}</v-btn>
+    </v-col>
+    <v-col cols="4">
+      <v-btn
+        color="#033a71"
+        style="color: #fff;"
+        :disabled="loading"
+        @click="updateSsl"
+      >{{ $t('updateSsl') }}</v-btn>
     </v-col>
     <v-col cols="12">
       <v-data-table
@@ -33,6 +43,7 @@ export default {
   name: 'settings',
   data() {
     return {
+      loading: false
     }
   },
   mounted() {
@@ -50,7 +61,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loadDbDumpsAction', 'createNewDbDumpAction', 'restoreDbDumpAction'])
+    ...mapActions(['loadDbDumpsAction', 'createNewDbDumpAction', 'restoreDbDumpAction']),
+    async updateSsl() {
+      this.loading = true
+      await this.updateSslAction()
+      this.loading = false
+    }
   },
   watch: {
     locale() {

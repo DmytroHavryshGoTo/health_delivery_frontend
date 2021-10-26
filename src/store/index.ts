@@ -157,6 +157,13 @@ export default new Vuex.Store({
       } catch (e: any) {
         return Promise.reject({ error: e.response.data.errors[0].detail })
       }
+    },
+    async updateSslAction() {
+      try {
+        await Api().put('/settings/update_ssl')
+      } catch (e: any) {
+        return Promise.reject({ error: e.response.data.errors[0].detail })
+      }
     }
   },
   getters: {
