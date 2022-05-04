@@ -1,7 +1,13 @@
 <template>
   <v-row>
     <v-col cols="4">
-      <h1 style="padding-bottom: 20px">{{ $t('deliveries') }}: {{ delivery.name }}</h1>
+      <h1 style="padding-bottom: 20px">{{ $t('deliveries') }}: {{ delivery.name }}
+        <span v-if="delivery.ad" class="small-span">
+            <a :href="`/ads?search=${delivery.ad.attributes.name}`">
+              ({{ delivery.ad.attributes.name }})
+            </a>
+        </span>
+      </h1>
       <h4 style="padding-bottom: 20px">{{ $t('parcelNumber') }}: {{ delivery.ttn }}</h4>
       <h4 style="padding-bottom: 20px">{{ $t('status') }}: {{ $t(delivery.status) }}</h4>
       <DrugsList

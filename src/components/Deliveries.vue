@@ -37,7 +37,10 @@
           <span>{{ item.route[item.route.length - 1].name }}</span>
         </template>
         <template #item.remove="{ item }">
-          <v-btn v-if="item.status === 'preparing_to_deliver'" icon @click="deleteDeliveryAction(item.id)">
+          <v-btn v-if="item.status === 'preparing_to_deliver' && item.userId == user.id"
+            icon
+            @click="deleteDeliveryAction(item.id)"
+          >
             <v-icon color="red">mdi-close-circle-outline</v-icon>
           </v-btn>
         </template>
@@ -55,10 +58,10 @@ export default {
     this.loadDeliveriesAction()
   },
   computed: {
-    ...mapState(['deliveries']),
+    ...mapState(['deliveries', 'user']),
     ...mapGetters(['locale']),
     headers() {
-      return [
+      const headers = [
         {
           text: this.$t('status'),
           value: 'status'
@@ -78,12 +81,18 @@ export default {
         {
           text: this.$t('estimatedDate'),
           value: 'estimatedDeliveryDate'
-        },
-        {
-          text: this.$t('deleteDelivery'),
-          value: 'remove'
         }
       ]
+      const includeActionSection = this.deliveries.some(({ status, userId }) => {
+        return status === 'preparing_to_deliver' && userId === this.user.id
+      })
+      if (includeActionSection) {
+        headers.push(        {
+          text: this.$t('deleteDelivery'),
+          value: 'remove'
+        })
+      }
+      return headers
     }
   },
   methods: {
@@ -98,7 +107,6 @@ export default {
   },
   watch: {
     locale() {
-      console.log('fsd')
       this.loadDeliveriesAction()
     }
   }

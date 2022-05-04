@@ -5,49 +5,54 @@ Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    path: "/",
+    name: "Home",
+    component: () => import("@/views/Home.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
     children: [
       {
-        path: '/settings',
-        name: 'Settings',
-        component: () => import('@/components/Settings.vue')
+        path: "/settings",
+        name: "Settings",
+        component: () => import("@/components/Settings.vue"),
       },
       {
-        path: '/deliveries/new',
-        name: 'NewDelivery',
-        component: () => import('@/components/NewDelivery.vue')
+        path: "/deliveries/new",
+        name: "NewDelivery",
+        component: () => import("@/components/NewDelivery.vue"),
       },
       {
-        path: '/deliveries',
-        name: 'Deliveries',
-        component: () => import('@/components/Deliveries.vue')
+        path: "/deliveries",
+        name: "Deliveries",
+        component: () => import("@/components/Deliveries.vue"),
       },
       {
-        path: '/deliveries/:id',
-        name: 'Delivery',
-        component: () => import('@/components/Delivery.vue')
+        path: "/ads",
+        name: "Ads",
+        component: () => import("@/components/Ads.vue"),
       },
       {
-        path: '/users',
-        name: 'Users',
-        component: () => import('@/components/Users.vue')
-      }
-    ]
+        path: "/deliveries/:id",
+        name: "Delivery",
+        component: () => import("@/components/Delivery.vue"),
+      },
+      {
+        path: "/users",
+        name: "Users",
+        component: () => import("@/components/Users.vue"),
+      },
+    ],
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/Login.vue"),
     meta: {
-      guest: true
-    }
-  }
-]
+      guest: true,
+    },
+  },
+];
 
 const router = new VueRouter({
   mode: 'history',

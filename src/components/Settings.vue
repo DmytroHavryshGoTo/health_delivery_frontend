@@ -61,7 +61,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loadDbDumpsAction', 'createNewDbDumpAction', 'restoreDbDumpAction']),
+    ...mapActions(['loadDbDumpsAction', 'createNewDbDumpAction', 'restoreDbDumpAction', 'updateSslAction']),
     async updateSsl() {
       this.loading = true
       await this.updateSslAction()

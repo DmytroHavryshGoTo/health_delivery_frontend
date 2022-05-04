@@ -2,12 +2,34 @@
   <v-row>
     <v-col cols="12">
       <div class="delivery-header">
-        <h1>{{ $t('newDelivery') }}</h1>
+        <h1>
+          {{ $t('newDelivery') }}
+          <span v-if="ad" class="small-span">
+            {{ $t('for') }}
+            <a :href="`/ads?search=${ad.name}`">
+              {{ ad.name }}
+            </a>
+            <v-tooltip right v-if="!adValid">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon color="red">mdi-alert-circle</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $t('youCannotCreateDelivery') }}</span>
+            </v-tooltip>
+          </span>
+        </h1>
         <v-btn
           color="#033a71"
           style="color: #fff;"
           @click="createDelivery"
-          :disabled="loading || $v.form.invalid || form.route.length < 2"
+          :disabled="loading || $v.form.invalid || form.route.length < 2 || !adValid"
         >{{ $t('create') }}</v-btn>
       </div>
     </v-col>
@@ -80,8 +102,8 @@
 </template>
 
 <script>
-import { required, minLength } from 'vuelidate/lib/validators'
-import { mapActions } from 'vuex'
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { mapActions, mapState } from 'vuex'
 import DrugsList from './DrugsList.vue'
 import Route from './Route.vue'
 
@@ -92,16 +114,28 @@ export default {
     return {
       form: {
         name: '',
+        adId: '',
         estimatedDeliveryDate: '',
         route: [],
       },
       dateMenu: false,
       drugs: [],
-      loading: false
+      loading: false,
+      adValid: true
     }
   },
+  mounted() {
+    const adId = this.$route.query.ad_id
+    if (!adId) return
+
+    this.form.adId = adId
+    this.loadAdAction(adId)
+  },
+  computed: {
+    ...mapState(['ad'])
+  },
   methods: {
-    ...mapActions(['createDeliveryAction']),
+    ...mapActions(['createDeliveryAction', 'loadAdAction']),
     errorMessage(field) {
       if (!field.$dirty) return
   
@@ -117,13 +151,24 @@ export default {
         this.loading = true
         await this.createDeliveryAction({
           delivery: this.form,
-          drugs: this.drugs
+          drugs: this.drugs,
+          adId: this.form.adId
         })
         this.$router.push('/deliveries')
       } catch (e) {
         console.log(e)
       } finally {
         this.loading = false
+      }
+    }
+  },
+  watch: {
+    ad(val) {
+      if (!val) return
+
+      if (val.deliveryId) {
+        this.adValid = false
+        this.$v.adValid.$touch()
       }
     }
   },
@@ -137,6 +182,9 @@ export default {
         estimatedDeliveryDate: {
           required
         }
+      },
+      adValid: {
+        sameAs: sameAs( () => true )
       }
     }
   }

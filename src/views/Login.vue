@@ -29,6 +29,15 @@
               :error-messages="errorMessage($v.form.lastName)"
               outlined
             />
+            <v-text-field
+              v-model="form.phoneNumber"
+              @input="$v.form.phoneNumber.$touch"
+              :label="$t('phoneNumber')"
+              :hint="$t('phoneExample')"
+              :class="{ clrError: $v.form.phoneNumber.$error }"
+              :error-messages="errorMessage($v.form.phoneNumber)"
+              outlined
+            />
           </template>
           <v-text-field
             v-model="form.email"
@@ -45,6 +54,12 @@
             :class="{ clrError: $v.form.password.$error }"
             :error-messages="errorMessage($v.form.password)"
             type="password"
+            outlined
+          />
+          <v-checkbox
+            v-if="signUp"
+            v-model="form.needHelp"
+            :label="$t('needHelp')"
             outlined
           />
           <v-btn
@@ -95,7 +110,9 @@ export default Vue.extend({
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      phoneNumber: '',
+      needHelp: false
     },
     loading: false
   }),
@@ -144,7 +161,9 @@ export default Vue.extend({
           ...this.form,
           firstName: '',
           lastName: '',
-          password: ''
+          password: '',
+          phoneNumber: '',
+          needHelp: false
         }
         this.errorMsg = ''
         this.$v.$reset()
@@ -171,6 +190,12 @@ export default Vue.extend({
             return this.signUp
           }),
           minLength: minLength(this.signUp ? 3 : 0)
+        },
+        phoneNumber: {
+          required: requiredIf(function() {
+            return this.signUp
+          }),
+          minLength: minLength(this.signUp ? 13 : 0)
         },
         email: { required, email },
         password: { required, minLength: minLength(6) }

@@ -16,6 +16,14 @@
         <v-list-item-title>{{ $t('deliveries') }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+    <v-list-item link :to="'/ads'">
+      <v-list-item-icon>
+        <v-icon>mdi-hospital-box-outline</v-icon>
+      </v-list-item-icon>
+      <v-list-item-content>
+        <v-list-item-title>{{ $t('help') }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     <v-list-item link :to="'/users'" v-if="isAdmin">
       <v-list-item-icon>
         <v-icon>mdi-account</v-icon>
