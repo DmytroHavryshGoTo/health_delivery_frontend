@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col style="display: flex; justify-content: flex-end;" v-if="isPreview">
+      <v-col style="display: flex; flex-direction: column;" v-if="isPreview">
         <div v-for="(station, idx) in damagedRoutes" :key="idx" class="damage-container">
           <h4>{{ station.name }}</h4>
           <template v-for="(damage, idxx) in station.damages">

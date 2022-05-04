@@ -6,13 +6,15 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VueI18n from 'vue-i18n'
 import Vuelidate from 'vuelidate'
-import * as VueGoogleMaps from 'vue2-google-maps'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import JsonViewer from "vue-json-viewer";
+import * as VueGoogleMaps from "vue2-google-maps";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
 
-import { messages } from './utils/locales'
+import { messages } from "./utils/locales";
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
+Vue.use(JsonViewer);
 Vue.use(VueI18n)
 Vue.use(Vuelidate)
 Vue.use(VueGoogleMaps, {

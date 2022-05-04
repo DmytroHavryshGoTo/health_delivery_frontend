@@ -104,3 +104,31 @@ export const Api = (): AxiosInstance => {
 
   return axiosInstance
 }
+
+export const IotApi = (): AxiosInstance => {
+  const axiosInstance: AxiosInstance = axios.create({
+    baseURL: `${process.env.VUE_APP_API_URL}`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `${process.env.VUE_APP_IOT_SECRET}`,
+      "Accept-Language": localStorage.getItem("locale") || "en",
+    },
+  });
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (
+        [401, 403].includes(error.response.status) &&
+        window.location.pathname !== "/login"
+      ) {
+        console.log(error);
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosInstance;
+};

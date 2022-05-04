@@ -42,6 +42,11 @@ const routes: Array<RouteConfig> = [
         name: "Users",
         component: () => import("@/components/Users.vue"),
       },
+      {
+        path: "/iot-simulator",
+        name: "IotSimulator",
+        component: () => import("@/components/IotSimulator.vue"),
+      },
     ],
   },
   {

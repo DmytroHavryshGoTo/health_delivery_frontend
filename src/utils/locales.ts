@@ -77,6 +77,18 @@ export const messages: LocaleMessages = {
            phoneExample: "+380961234567",
            publishPolicy:
              "You accept that you personal information such as First Name, Last Name, and Phone Number will be published.",
+           iotSimulator: "IoT Simulator",
+           updateStatus: "Update status",
+           city: "City",
+           success: "Success",
+           deliveryIdRequired: "Delivery ID is required",
+           latRequired: "Latitude is required",
+           lonRequired: "Longitude is required",
+           statusRequired: "Status is required",
+           containerIdRequired: "Container ID is required",
+           messageRequired: "Message is required",
+           statusUpdate: "Status update",
+           damage: "Damage",
          },
          uk: {
            email: "Пошта",

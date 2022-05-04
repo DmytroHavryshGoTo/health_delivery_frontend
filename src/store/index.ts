@@ -7,6 +7,7 @@ import {
 } from "@/utils/helpers";
 import {
   Api,
+  IotApi,
   extractAttrs,
   extractSingleDeliveryAttrs,
   extractMultipleDeliveriesAttrs,
@@ -216,6 +217,20 @@ export default new Vuex.Store({
         return Promise.reject({ error: e.response.data.errors[0].detail });
       }
     },
+    async updateStatusIotAction(_, { id, params }) {
+      try {
+        await IotApi().put(`/deliveries/${id}`, toSnakeCase(params));
+      } catch (e) {
+        return Promise.reject({ error: e.response.data.errors[0].detail });
+      }
+    },
+    async damageIotAction(_, { id, params }) {
+      try {
+        await IotApi().post(`/deliveries/${id}/damage`, toSnakeCase(params));
+      } catch (e) {
+        return Promise.reject({ error: e.response.data.errors[0].detail });
+      }
+    },
     async completeAdAction({ commit }, id) {
       try {
         await Api().put(`/ads/${id}`, {
@@ -223,10 +238,10 @@ export default new Vuex.Store({
         });
         commit("completeAd", id);
       } catch (e) {
-                    return Promise.reject({
-                      error: e.response.data.errors[0].detail,
-                    });
-                  }
+        return Promise.reject({
+          error: e.response.data.errors[0].detail,
+        });
+      }
     },
   },
   getters: {

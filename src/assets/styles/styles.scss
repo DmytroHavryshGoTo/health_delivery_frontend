@@ -4,7 +4,8 @@ $element-bg-color: #f9f9f9;
 
 .sidebar {
   background-color: $primary-color;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   padding: 0 !important;
   .logo {
     display: flex;
